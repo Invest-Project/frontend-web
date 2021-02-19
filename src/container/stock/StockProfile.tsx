@@ -8,11 +8,11 @@ import MAIN_MARKET_STOCK_INFO from '../../utils/Main_Market.json';
 
 const StockProfile: React.FC<{ code: string }> = ({ code }) => {
   const selectedStock = MAIN_MARKET_STOCK_INFO.find(stock => stock.code == code) as StockT;
-  const [stockData, setStockData] = useState([] as StockInfoResT);
+  const [stockData, setStockData] = useState([]);
 
   useEffect(() => {
     async function getStockData() {
-      const stockData = await fetchStockData(code);
+      const [_, ...stockData] = await fetchStockData(code);
       setStockData(stockData);
     }
 

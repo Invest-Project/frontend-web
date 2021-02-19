@@ -13,7 +13,7 @@ const groupingUnits = [[
 
 type OHLChartProps = { 
   stock: StockT,
-  stockData: StockInfoResT
+  stockData: any[][]
 };
 
 const OHLChart: React.FC<OHLChartProps> = ({ stockData, stock }) => {
@@ -56,20 +56,14 @@ const OHLChart: React.FC<OHLChartProps> = ({ stockData, stock }) => {
     series: [{
       type: 'candlestick',
       name: stock.name,
-      data: stockData.map(data => [
-        +new Date(data.date),
-        data.open,
-        data.high,
-        data.low,
-        data.close
-      ]),
+      data: stockData.map(row => row.slice(0, row.length - 1)),
       dataGrouping: {
           units: groupingUnits
       }
     }, {
         type: 'column',
         name: 'Volume',
-        data: stockData.map(data => [+new Date(data.date), data.volume]),
+        data: stockData.map(row => [row[0], row[row.length - 1]]),
         yAxis: 1,
         dataGrouping: {
             units: groupingUnits

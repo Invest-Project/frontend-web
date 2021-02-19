@@ -1,6 +1,6 @@
 const API = {
   GET: {
-    getStockData: 'http://localhost:3001'
+    getStockData: 'http://localhost:3001/requestEod'
   }
 }
 

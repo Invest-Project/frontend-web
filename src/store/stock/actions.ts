@@ -4,8 +4,8 @@ import API from '../../constants/api';
 
 export async function fetchStockData(code: string) {
   try {
-    const response: AxiosResponse<StockInfoResT> = await axios.get(API.GET.getStockData, {
-      params: { code }
+    const response: AxiosResponse<StockInfoResT> = await axios.post(API.GET.getStockData, {
+      id: code
     });
   
     return response.data;
