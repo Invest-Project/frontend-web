@@ -7,8 +7,15 @@ export async function fetchStockData(code: string) {
     const response: AxiosResponse<StockInfoResT> = await axios.post(API.GET.getStockData, {
       id: code
     });
+
+    const response2 = await axios.post('http://localhost:3001/requestRecords', {
+      id: code
+    });
   
-    return response.data;
+    return {
+      chart: response.data,
+      record: response2.data
+    };
   } catch (e) {
     console.error(e);
   }

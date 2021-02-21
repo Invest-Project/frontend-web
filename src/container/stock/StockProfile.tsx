@@ -9,11 +9,13 @@ import MAIN_MARKET_STOCK_INFO from '../../utils/Main_Market.json';
 const StockProfile: React.FC<{ code: string }> = ({ code }) => {
   const selectedStock = MAIN_MARKET_STOCK_INFO.find(stock => stock.code == code) as StockT;
   const [stockData, setStockData] = useState([]);
+  const [records, setRecords] = useState([]);
 
   useEffect(() => {
     async function getStockData() {
-      const [_, ...stockData] = await fetchStockData(code);
-      setStockData(stockData);
+      const stockData = await fetchStockData(code);
+      setStockData(stockData.chart);
+      setRecords(stockData.record);
     }
 
     getStockData();
@@ -29,6 +31,19 @@ const StockProfile: React.FC<{ code: string }> = ({ code }) => {
         <p>Category: {selectedStock.category} {selectedStock.shariah ? 'V' : 'X'}</p>
         <p>Visit <a href={selectedStock.href}>here</a> for more info</p>
         <OHLChart stock={selectedStock} stockData={stockData} />
+        {
+          records.map(record => (
+            <div>
+              {
+                record.map((item, index) => index !== 4 ? (
+                  <span style={{marginRight: 20}}>{item}</span>
+                ) : (
+                  <a href={item}>source</a>
+                ))
+              }
+            </div>
+          ))
+        }
       </>
     )
   } else {
