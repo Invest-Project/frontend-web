@@ -1,7 +1,7 @@
 import React from 'react';
 import HighChartStock from 'highcharts/highstock';
 import HighchartsReact from 'highcharts-react-official';
-import { StockInfoResT, StockT } from '../constants/types';
+import { StockT } from '../constants/types';
 
 const groupingUnits = [[
   'week',                         // unit name
@@ -13,7 +13,7 @@ const groupingUnits = [[
 
 type OHLChartProps = { 
   stock: StockT,
-  stockData: any[][]
+  stockData: number[][]
 };
 
 const OHLChart: React.FC<OHLChartProps> = ({ stockData, stock }) => {

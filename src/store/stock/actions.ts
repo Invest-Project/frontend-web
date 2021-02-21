@@ -1,20 +1,20 @@
 import axios, { AxiosResponse } from 'axios';
-import { StockInfoResT } from '../../constants/types';
+import { StockHistoricalDataResT, StockFinancialDataResT } from '../../constants/types';
 import API from '../../constants/api';
 
 export async function fetchStockData(code: string) {
   try {
-    const response: AxiosResponse<StockInfoResT> = await axios.post(API.GET.getStockData, {
+    const historicalData: AxiosResponse<StockHistoricalDataResT> = await axios.post(API.GET.getStockData, {
       id: code
     });
 
-    const response2 = await axios.post('http://localhost:3001/requestRecords', {
+    const financialData: AxiosResponse<StockFinancialDataResT> = await axios.post(API.GET.getStockFinancials, {
       id: code
     });
   
     return {
-      chart: response.data,
-      record: response2.data
+      history: historicalData.data,
+      financials: financialData.data
     };
   } catch (e) {
     console.error(e);

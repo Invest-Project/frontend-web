@@ -1,6 +1,9 @@
+const BACK_END = 'http://localhost:3001';
+
 const API = {
   GET: {
-    getStockData: 'http://localhost:3001/requestEod'
+    getStockData: `${BACK_END}/requestEod`,
+    getStockFinancials: `${BACK_END}/requestRecords`
   }
 }
 

@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { StockInfoResT, StockT } from '../../constants/types';
+import { StockHistoricalDataResT, StockFinancialDataResT, StockT } from '../../constants/types';
 import OHLChart from '../../presentation/OHLC';
 import { fetchStockData } from '../../store/stock/actions';
 import MAIN_MARKET_STOCK_INFO from '../../utils/Main_Market.json';
+import FinancialDataTable from '../../presentation/FinancialDataTable';
 
+const INITIAL_STOCK_STATE = {
+  history: [] as StockHistoricalDataResT,
+  financials: [] as StockFinancialDataResT
+}
 
 const StockProfile: React.FC<{ code: string }> = ({ code }) => {
   const selectedStock = MAIN_MARKET_STOCK_INFO.find(stock => stock.code == code) as StockT;
-  const [stockData, setStockData] = useState([]);
-  const [records, setRecords] = useState([]);
+  const [stockData, setStockData] = useState(INITIAL_STOCK_STATE);
 
   useEffect(() => {
     async function getStockData() {
       const stockData = await fetchStockData(code);
-      setStockData(stockData.chart);
-      setRecords(stockData.record);
+      setStockData(stockData);
     }
 
     getStockData();
@@ -30,20 +33,10 @@ const StockProfile: React.FC<{ code: string }> = ({ code }) => {
         <p>Stock Name: {selectedStock.long_name}</p>
         <p>Category: {selectedStock.category} {selectedStock.shariah ? 'V' : 'X'}</p>
         <p>Visit <a href={selectedStock.href}>here</a> for more info</p>
-        <OHLChart stock={selectedStock} stockData={stockData} />
-        {
-          records.map(record => (
-            <div>
-              {
-                record.map((item, index) => index !== 4 ? (
-                  <span style={{marginRight: 20}}>{item}</span>
-                ) : (
-                  <a href={item}>source</a>
-                ))
-              }
-            </div>
-          ))
-        }
+        <OHLChart stock={selectedStock} stockData={stockData.history} />
+        <FinancialDataTable
+          financials={stockData.financials}
+        />
       </>
     )
   } else {
