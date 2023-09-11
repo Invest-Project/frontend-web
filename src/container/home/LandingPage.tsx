@@ -22,7 +22,8 @@ const LandingPage: React.FC<{}> = () => {
   const history = useHistory();
 
   React.useEffect(() => {
-    console.log('test2');
+    console.log('test');
+    console.log('test again, test test test')
     if (query.code) {
       history.push(`/stock/${query.code}`);
     }
